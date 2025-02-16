@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #E6E6FA;
+        }
+
+        .iphone-bevel {
+            background: #000;
+            padding: 12px;
+            border-radius: 50px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .volume-button {
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            background: #333;
+            border-radius: 2px;
+        }
+        .volume-up { height: 25px; top: 100px; }
+        .volume-down { height: 25px; top: 135px; }
+        .power-button {
+            position: absolute;
+            right: -4px;
+            top: 100px;
+            height: 60px;
+            width: 3px;
+            background: #333;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .iphone-screen {
+            width: 375px;
+            height: 812px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: opacity 0.3s;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Added Profile Header */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 15px;
+        }
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        .profile-menu {
+            color: #666;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-right: -5px;
+        }
+
+        .profile-content {
+            padding: 20px;
+            position: relative;
+            height: calc(100% - 120px);
+        }
+
+        .profile-photo {
+            height: 400px;
+            border-radius: 15px;
+            background: #ddd url('tumblr_7491b08e99f75ab5dd8df812769cec4a_e910d068_500.jpg') center/cover;
+            position: relative;
+        }
+
+        .heart-button {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .heart-button:hover {
+            transform: scale(1.1);
+        }
+
+        .prompt-box {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .prompt-label {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .prompt-answer {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 18px 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        .nav-icon {
+            color: #666;
+            font-size: 22px;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #000;
+            border-radius: 20px;
+        }
+
+        .valentine-alert {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 100;
+            width: 280px;
+        }
+        .valentine-alert button {
+            margin-top: 20px;
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .valentine-alert button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone-bevel">
+        <div class="volume-button volume-up"></div>
+        <div class="volume-button volume-down"></div>
+        <div class="power-button" onclick="toggleScreen()"></div>
+
+        <div class="iphone-screen" id="screen">
+            <div class="dynamic-island"></div>
+            
+            <div class="status-bar">
+                <span>5:20</span>
+                <span>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-signal" style="margin: 0 8px;"></i>
+                    <i class="fas fa-battery-full"></i>
+                </span>
+            </div>
+
+            <div class="profile-content">
+                <!-- Added Profile Header Section -->
+                <div class="profile-header">
+                    <div class="profile-name">Parker</div>
+                    <div class="profile-menu">•••</div>
+                </div>
+
+                <div class="profile-photo">
+                    <div class="heart-button" onclick="showAlert()">
+                        <i class="fas fa-heart" style="color: #ff4081; font-size: 20px;"></i>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    <div class="prompt-label">I'm looking for</div>
+                    <div class="prompt-answer">my Valentine</div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <i class="nav-icon fas fa-home"></i>
+                <i class="nav-icon fas fa-search"></i>
+                <i class="nav-icon fas fa-heart"></i>
+                <i class="nav-icon fas fa-comment"></i>
+                <i class="nav-icon fas fa-user"></i>
+            </div>
+
+            <div class="valentine-alert" id="alert">
+                <div style="font-size: 18px; margin-bottom: 15px;">Obviously you'd say yes</div>
+                <button onclick="closeAlert()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleScreen() {
+            const screen = document.getElementById('screen');
+            screen.style.opacity = screen.style.opacity === '0' ? '1' : '0';
+        }
+
+        function showAlert() {
+            document.getElementById('alert').style.display = 'block';
+        }
+
+        function closeAlert() {
+            document.getElementById('alert').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
